@@ -9,10 +9,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 @pytest.fixture
 def driver():
     # Setup
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    driver.maximize_window()
-    yield driver
+    ##driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    ##driver.maximize_window()
+    ##yield driver
     # Teardown
+    ##driver.quit()
+    options = Options()
+    options.add_argument("--headless")  # modo headless
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080")  # en lugar de maximize_window()
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    yield driver
     driver.quit()
 
 def test_interaccion_con_elementos_web(driver):
